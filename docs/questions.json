@@ -1,0 +1,42 @@
+[
+  [
+    "Which services have costs but no measured usage?",
+    "exceptions"
+  ],
+  [
+    "What share of support does each department carry, down to the cent?",
+    "allocation-preview"
+  ],
+  [
+    "How does a hosting credit affect departmental shares?",
+    "allocation-preview"
+  ],
+  [
+    "Which departments exceed their budget after shared costs?",
+    "variance"
+  ],
+  [
+    "Which allocation changed after a reviewer checked it?",
+    "attention"
+  ],
+  [
+    "Which usage measurements are more than 45 days old?",
+    "compliance"
+  ],
+  [
+    "Which imported counts and totals fail their source controls?",
+    "compliance"
+  ],
+  [
+    "What exact costs and weights supported an earlier allocation?",
+    "run"
+  ],
+  [
+    "Who rejected an allocation, and what evidence did they give?",
+    "run"
+  ],
+  [
+    "Which period needs review first, including periods never allocated?",
+    "attention"
+  ]
+]

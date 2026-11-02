@@ -1,13 +1,24 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Technology Costs for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Technology cost review",
+    "subtitle": "Fictional demo. Draft allocation statements do not post charges.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Review queue",
+        "sql": "select period,currency,review_due,issue,decision from attention order by review_due"
+      },
+      {
+        "title": "Unallocated services",
+        "sql": "select * from allocation_exceptions order by period,service"
+      },
+      {
+        "title": "Department budgets",
+        "sql": "select * from budget_variance order by period,unit"
+      },
+      {
+        "title": "Departmental costs",
+        "sql": "select period,currency,service,unit,amount,status from showback order by period,unit,service"
       }
     ]
   }

@@ -1,115 +1,128 @@
-<h1 align="center">Technology Costs for Claude Code</h1>
+# Technology Costs for Claude Code
 
-<p align="center">
-  <strong>The open-source technology cost allocation system that is just a database and Claude Code.</strong>
-</p>
+Allocate shared technology costs to departments and explain every cent. A focused, owned alternative for teams using IBM Apptio Costing for this part of their work.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+Built by **Enterprise DNA**. MIT licence. Works with Claude Code, Codex, OpenCode or Cursor.
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your IBM Apptio Costing data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/ibm-apptio-costing?utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing">How it works</a></td>
-  </tr>
-</table>
-
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-ibm-apptio-costing">Instead of IBM Apptio Costing</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Technology Costs for Claude Code does the job you pay IBM Apptio Costing for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the IBM Apptio Costing dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays IBM Apptio Costing per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free. Install the database and commands below. | Your cost pools, allocation rules, documents and Apptio exports mapped across. | Installed, connected and operated through Omni by Enterprise DNA. Setup fee, then a retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing) | [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing) |
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or newer. No database service is needed for the demo.
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/technology-costs-for-claude-code.git
 cd technology-costs-for-claude-code
 npm install
 npm run demo
+npm run costs -- allocate --period="October 2026" --actor="Your actual name" --purpose="Review demo costs"
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+All demo businesses, people and records are fictional. The database is embedded PGlite in .data/db. Set DATABASE_URL for shared Postgres and run npm run migrate. Keep the owner connection private. This base has no sign-in service. A hosted installation needs access controls, backups and retention policies.
 
-### Use it with your own Postgres or Supabase
+## What the base does
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+Store period costs, services, departments, measured usage, budgets and source controls. Allocate a service's net costs using positive integer usage weights. Save the inputs, results, preparer and purpose. Keep reviews and explanations as append-only evidence. Changed inputs mark a saved allocation stale. Approval requires another named person and a fully allocated period.
 
-## The commands
+The allocation uses exact integer cents and largest remainders. Ties break on stable department IDs. Credits use the same weights and sign. Missing weights stay visibly unallocated, including a net-zero pool. Each period has one currency. There is no currency conversion, tax calculation, payment, invoice issue or accounting-ledger posting.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+IBM Apptio is broader: this base covers one-stage shared-service allocation and departmental statements. It does not reproduce its full cost-model hierarchy, integrations, planning suite or benchmarks. Enterprise DNA scopes those requirements when building your version. [Research and candidate scores](docs/research.md).
 
-| Command | What it does |
+## The weekly rituals
+
+Read `/attention`, refresh `/drivers`, inspect `/allocation-preview`, save `/allocate`, obtain `/review`, then prepare `/draft-statement` and `/weekly-review`. The weekly review draws on attention, budget variance and evidence checks.
+
+| Command | Result |
 |---|---|
-| `/...` | ... |
+| `/periods` | List cost periods and review deadlines |
+| `/units` | List departments and their owners |
+| `/services` | List shared services and their allocation basis |
+| `/costs` | Read the source costs for a period |
+| `/drivers` | Read measured usage and its evidence |
+| `/imports` | Check imported source controls |
+| `/allocation-preview` | Preview departmental shares without saving |
+| `/allocate` | Save an allocation with its source snapshot |
+| `/runs` | List saved allocations |
+| `/run` | Read an allocation and its review history |
+| `/review` | Record a separate person's review |
+| `/showback` | Show which department carries each cost |
+| `/variance` | Compare departmental costs with budgets |
+| `/exceptions` | Find costs with no positive usage weights |
+| `/attention` | Find periods awaiting work or independent review |
+| `/compliance` | Check source controls, evidence age and retention review |
+| `/add` | Add a period, department or shared service |
+| `/set-driver` | Record measured usage and its source |
+| `/set-budget` | Set a departmental period budget |
+| `/log` | Record the explanation behind a cost decision |
+| `/history` | Read period discussion notes |
+| `/import` | Import an Apptio report after reconciling independent controls |
+| `/export` | Write a complete JSON backup to a new file |
+| `/weekly-review` | Draft the weekly cost review from attention, variance and compliance |
+| `/draft-statement` | Draft departmental cost statements |
+| `/documents` | Render branded statements and reconciliation sheets |
+| `/views` | Render a read-only weekly cost dashboard |
+| `/customise` | Change the model with a tested migration |
+| `/new-view` | Add a read-only report |
 
-## Instead of IBM Apptio Costing
+CLI reads accept --json. Exact names match without case. Partial names and ID prefixes work when unique. Ambiguous matches list candidates and exit 1. Unknown verbs fail.
 
-<!-- TODO(author): how to bring data across from IBM Apptio Costing; link docs/replace-ibm-apptio-costing.md -->
+## Bring an Apptio export across
+
+Create the destination period, services and departments first. Apptio reports are configurable, so inspect the actual report columns and map them explicitly. The example headers are a supported mapping, not a universal Apptio format.
+
+```bash
+npm run costs -- import apptio --period="October 2026" --file=examples/apptio-costs.csv --map=examples/mapping.json --actor="Your actual name" --source-ref="Unfiltered cost report" --expected-count=2 --expected-total=80.01 --dry-run
+```
+
+Review the result, then repeat without --dry-run. A single command imports a prepared cost export. The count and total must come from an independent report control. Currency mismatches, duplicate IDs, unknown services and mismatched totals reject the whole import. Repeating the same file does nothing. A different file containing existing source IDs fails: use explicit correction entries, not overwritten history. Raw columns and the file fingerprint are retained. [Export, mapping and migration limits](docs/replace-ibm-apptio-costing.md).
+
+## Ten questions to ask
+
+These are answered by this base today. Apptio can also answer many of them when configured. We make no claim that its broader platform cannot do so.
+
+1. Which services have costs but no measured usage? `exceptions`
+2. What share of support does each department carry, down to the cent? `allocation-preview`
+3. How does a hosting credit affect departmental shares? `allocation-preview`
+4. Which departments exceed their budget after shared costs? `variance`
+5. Which allocation changed after a reviewer checked it? `attention`
+6. Which usage measurements are more than 45 days old? `compliance`
+7. Which imported counts and totals fail their source controls? `compliance`
+8. What exact costs and weights supported an earlier allocation? `run`
+9. Who rejected an allocation, and what evidence did they give? `run`
+10. Which period needs review first, including periods never allocated? `attention`
+
+## Your first hour: ten things to ask for
+
+1. Put our name, colours and logo in brand.json.
+2. Add this month's period and its currency.
+3. List the departments and who owns each budget.
+4. Name the shared services and their usage measures.
+5. Map our Apptio report columns.
+6. Reconcile the source export to independent counts and totals.
+7. Record staff counts, storage or other measured usage.
+8. Preview the shares and investigate missing measurements.
+9. Save an allocation and have another person review it.
+10. Draft the departmental statement and export a backup.
+
+## Documents and views
+
+npm run docs generates branded departmental cost statements and source reconciliation sheets in docs-out/. npm run view generates views/week.html. Both are local read-only HTML with escaped record values. No server or front end is built. `/new-view` adds a report. The operator chooses where private reports are stored and who can read them.
+
+## Review and retention
+
+A name in a CLI command is attribution, not authentication. Never act as another reviewer. A privileged database owner can bypass the model's controls, so do not treat it as a tamper-proof vault. Run snapshots preserve prior weights and budgets. Source files and original invoices need independent retention and backup. `/compliance` checks evidence and deadlines, not legal compliance certification. [Sources and rules](docs/compliance.md).
+
+## Validation
+
+npm test creates a temporary database, migrates and seeds twice, exercises all 25 CLI commands, tests signed rounding, source rejection, review gates, historical snapshots, ambiguity, backups and HTML escaping. The manual workflow covers Node 20/22 on Windows and Linux and PostgreSQL 17. Actual run evidence belongs in docs/validation.md.
 
 ## Architecture
 
-```
-technology-costs-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+One CLI in scripts/costs.mjs. Plain Postgres migrations in supabase/migrations. PGlite and Postgres share the adapter in scripts/lib/db.mjs. views.json and documents.json define read-only reports. brand.json supplies the business identity. Commands are shared across agent runtimes through AGENTS.md and CLAUDE.md.
 
-## Built for coding agents
-
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
-
-## Contributing
-
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
-
-## Want it installed and run for you?
-
-Enterprise DNA installs Technology Costs for Claude Code for your business, migrates your IBM Apptio Costing data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
-
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing)
-- Read more: [enterprisedna.co/omni/instead-of/ibm-apptio-costing](https://enterprisedna.co/omni/instead-of/ibm-apptio-costing?utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing)
-
-## License
-
-MIT. Copyright (c) 2026 Enterprise DNA.
+MIT. Built and optionally operated through [Omni by Enterprise DNA](https://enterprisedna.co/omni/instead-of/ibm-apptio-costing).

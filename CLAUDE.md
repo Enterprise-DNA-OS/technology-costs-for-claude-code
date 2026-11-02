@@ -1,43 +1,59 @@
-# Technology Costs for Claude Code: operating instructions
+# Technology Costs for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+For the person who explains shared technology costs to department owners. Ask for the real period, currency, source report, measured usage and actual preparer. Demo records are fictional.
 
-## Who this is for
+## Rules
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+Read before changing anything. Keep currencies separate. Read docs/compliance.md before discussing a control. Never invent a usage measurement or source control. Use the operator's actual identity. A review belongs to a different real person, never a second name invented by the agent.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+All sends, accounting postings and payments are outside this base. Draft files only and return them in chat. Do not overwrite source history or old runs. Correct a source error with explicit new correction entries. Use a new migration for model changes.
 
-## How to work
+## Commands
 
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
-
-## Routing table: one right way for each recurring job
-
-| When the operator asks for... | Use this |
+| Ask | Result |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| `/periods` | List cost periods and review deadlines |
+| `/units` | List departments and their owners |
+| `/services` | List shared services and their allocation basis |
+| `/costs` | Read the source costs for a period |
+| `/drivers` | Read measured usage and its evidence |
+| `/imports` | Check imported source controls |
+| `/allocation-preview` | Preview departmental shares without saving |
+| `/allocate` | Save an allocation with its source snapshot |
+| `/runs` | List saved allocations |
+| `/run` | Read an allocation and its review history |
+| `/review` | Record a separate person's review |
+| `/showback` | Show which department carries each cost |
+| `/variance` | Compare departmental costs with budgets |
+| `/exceptions` | Find costs with no positive usage weights |
+| `/attention` | Find periods awaiting work or independent review |
+| `/compliance` | Check source controls, evidence age and retention review |
+| `/add` | Add a period, department or shared service |
+| `/set-driver` | Record measured usage and its source |
+| `/set-budget` | Set a departmental period budget |
+| `/log` | Record the explanation behind a cost decision |
+| `/history` | Read period discussion notes |
+| `/import` | Import an Apptio report after reconciling independent controls |
+| `/export` | Write a complete JSON backup to a new file |
+| `/weekly-review` | Draft the weekly cost review from attention, variance and compliance |
+| `/draft-statement` | Draft departmental cost statements |
+| `/documents` | Render branded statements and reconciliation sheets |
+| `/views` | Render a read-only weekly cost dashboard |
+| `/customise` | Change the model with a tested migration |
+| `/new-view` | Add a read-only report |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+Use npm run costs -- help for the CLI list. CLI reads support --json. Names match without case and IDs by prefix. If the CLI gives multiple candidates, show them and ask which record. Use the recipes in .claude/commands for exact arguments.
 
-## Hard rules
+## Evidence and states
 
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
+One-stage weighted allocation conserves signed cents. A missing driver remains UNALLOCATED. Departmental statements are drafts until independent review. Any changed cost, weight or budget makes the prior run stale. The snapshot in each run preserves the inputs as they were. A source hash detects differences, not privileged tampering.
 
-## Where things live
+Before import, inspect the Apptio report, filters and mapping. Obtain independent count and total, dry-run, then import. Read docs/replace-ibm-apptio-costing.md. Do not pretend export mappings transfer model formulas, authentication or integrations.
 
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off IBM Apptio Costing.
+Keep owner database connections private. This is a trusted local agent interface, not an authenticated web service. Source documents stay under the business's access and retention policies. No customer records belong in this repository.
 
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/ibm-apptio-costing
+## Files
+
+scripts/costs.mjs is the CLI. scripts/lib/allocation.mjs holds exact cents and allocation. supabase/migrations holds versioned schema. views.json and documents.json hold read-only report definitions. brand.json supplies identity. npm test uses a temporary embedded database. TEST_DATABASE_URL is only for a fresh disposable PostgreSQL database.
+
+Built and optionally operated through Omni by Enterprise DNA.

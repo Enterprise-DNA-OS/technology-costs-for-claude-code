@@ -1,11 +1,40 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "allocation-statement",
+    "title": "Departmental technology cost statement",
+    "for_each": "select id,name from periods order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Review status",
+        "note": "Draft until independently reviewed. No invoice or ledger posting is made.",
+        "sql": "select a.* from attention a join periods p on p.name=a.period where p.id=$1"
+      },
+      {
+        "title": "Allocation detail",
+        "sql": "select s.period,s.currency,s.service,s.unit,s.amount,s.status from showback s join periods p on p.name=s.period where p.id=$1 order by unit,service"
+      },
+      {
+        "title": "Budget differences",
+        "sql": "select v.* from budget_variance v join periods p on p.name=v.period where p.id=$1 order by unit"
+      }
+    ]
+  },
+  {
+    "name": "source-reconciliation",
+    "title": "Source cost reconciliation",
+    "for_each": "select id,source_ref as name from imports order by created_at",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Source control",
+        "sql": "select source_ref,actor,expected_count,expected_cents,fingerprint from imports where id=$1",
+        "layout": "record"
+      },
+      {
+        "title": "Imported costs",
+        "sql": "select c.source_id,s.name as service,c.description,c.amount_cents,p.currency from costs c join services s on s.id=c.service_id join periods p on p.id=c.period_id where import_id=$1 order by source_id"
+      }
     ]
   }
 ]
