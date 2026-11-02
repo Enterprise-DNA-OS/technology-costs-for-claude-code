@@ -9,7 +9,7 @@
     "title": "Costs without a usage measure",
     "ask": "Which service costs have no measured usage to allocate them?",
     "command": "node scripts/costs.mjs exceptions --period=\"October 2026\"",
-    "output": "  period        service          source_rows  cost                  currency  issue                     \n  ------------  ---------------  -----------  --------------------  --------  --------------------------\n  October 2026  Archive storage  1            900.0000000000000000  NZD       No positive driver weights"
+    "output": "  period        service          source_rows  cost    currency  issue                     \n  ------------  ---------------  -----------  ------  --------  --------------------------\n  October 2026  Archive storage  1            900.00  NZD       No positive driver weights"
   },
   {
     "title": "Review queue",

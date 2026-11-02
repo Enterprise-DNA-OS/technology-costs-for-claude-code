@@ -27,7 +27,7 @@ try{
  equal(preview.filter(x=>x.service==='Shared hosting').map(x=>x.amount),['3800.00','1900.00']);
  const [first]=await run('allocate',oct,'--actor=Alex','--purpose=October review');equal(String(first.source_cents),'1560001');equal(String(first.allocated_cents),'1470001');equal(String(first.unallocated_cents),'90000');
  equal((await run('runs',oct)).length,1);equal((await run('run',first.id)).snapshot.costs.length,4);
- equal((await run('showback',oct)).length,6);equal((await run('variance',oct)).find(x=>x.unit==='Advisory').variance,'800.0000000000000000');
+ equal((await run('showback',oct)).length,6);equal((await run('variance',oct)).find(x=>x.unit==='Advisory').variance,'800.00');
  equal((await run('exceptions',oct)).length,1);equal((await run('attention')).find(x=>x.period==='October 2026').issue,'Unallocated services');
  assert((await run('compliance')).some(x=>x.rule==='DRIVER_AGE'));checks++;
  await fail(['review',first.id,'--actor=Alex','--decision=approved','--conclusion=ok','--evidence=review'],/different person/);

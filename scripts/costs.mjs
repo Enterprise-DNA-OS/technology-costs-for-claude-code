@@ -90,10 +90,10 @@ export async function execute(db,args){
   await db.query('select id from periods where id=$1 for update',[p.id]);
   Object.assign(p,(await db.query('select * from periods where id=$1',[p.id]))[0]);
  }
- if(cmd==='costs')return db.query('select c.source_id,s.name as service,c.description,c.amount_cents::numeric/100 as amount,p.currency from costs c join services s on s.id=c.service_id join periods p on p.id=c.period_id where p.id=$1 order by c.source_id',[p.id]);
+ if(cmd==='costs')return db.query('select c.source_id,s.name as service,c.description,round(c.amount_cents::numeric/100,2) as amount,p.currency from costs c join services s on s.id=c.service_id join periods p on p.id=c.period_id where p.id=$1 order by c.source_id',[p.id]);
  if(cmd==='drivers')return db.query('select s.name as service,u.name as unit,d.weight,d.measured_on,d.evidence from drivers d join services s on s.id=d.service_id join units u on u.id=d.unit_id where period_id=$1 order by s.name,u.name',[p.id]);
- if(cmd==='imports')return db.query('select id,source_ref,expected_count,expected_cents::numeric/100 as expected_amount,actor,fingerprint from imports where period_id=$1 order by created_at,id',[p.id]);
- if(cmd==='runs')return db.query('select id,actor,purpose,revision,source_cents::numeric/100 as source_amount,allocated_cents::numeric/100 as allocated_amount,unallocated_cents::numeric/100 as unallocated_amount from runs where period_id=$1 order by created_at desc,id desc',[p.id]);
+ if(cmd==='imports')return db.query('select id,source_ref,expected_count,round(expected_cents::numeric/100,2) as expected_amount,actor,fingerprint from imports where period_id=$1 order by created_at,id',[p.id]);
+ if(cmd==='runs')return db.query('select id,actor,purpose,revision,round(source_cents::numeric/100,2) as source_amount,round(allocated_cents::numeric/100,2) as allocated_amount,round(unallocated_cents::numeric/100,2) as unallocated_amount from runs where period_id=$1 order by created_at desc,id desc',[p.id]);
  if(cmd==='history')return db.query('select actor,body,created_at from notes where period_id=$1 order by created_at,id',[p.id]);
  if(cmd==='log')return db.query('insert into notes(period_id,actor,body) values($1,$2,$3) returning id,body',[p.id,needed(o,'actor'),needed(o,'text')]);
  if(cmd==='set-driver'){
