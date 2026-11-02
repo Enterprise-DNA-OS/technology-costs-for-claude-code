@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Departmental shares",
+    "ask": "How are our shared technology costs divided between departments?",
+    "command": "node scripts/costs.mjs allocation-preview --period=\"October 2026\"",
+    "output": "  service            unit          amount   currency  weight\n  -----------------  ------------  -------  --------  ------\n  Workplace support  Advisory      3000.00  NZD       20    \n  Workplace support  Distribution  4500.01  NZD       30    \n  Workplace support  Operations    1500.00  NZD       10    \n  Shared hosting     Advisory      3800.00  NZD       2     \n  Shared hosting     Distribution  1900.00  NZD       1     \n  Archive storage    UNALLOCATED   900.00   NZD       0"
+  },
+  {
+    "title": "Costs without a usage measure",
+    "ask": "Which service costs have no measured usage to allocate them?",
+    "command": "node scripts/costs.mjs exceptions --period=\"October 2026\"",
+    "output": "  period        service          source_rows  cost                  currency  issue                     \n  ------------  ---------------  -----------  --------------------  --------  --------------------------\n  October 2026  Archive storage  1            900.0000000000000000  NZD       No positive driver weights"
+  },
+  {
+    "title": "Review queue",
+    "ask": "Which cost periods need attention first?",
+    "command": "node scripts/costs.mjs attention",
+    "output": "  period          currency  review_due  issue                 decision\n  --------------  --------  ----------  --------------------  --------\n  September 2026  NZD       2026-10-03  No allocation run     pending \n  October 2026    NZD       2026-10-30  Unallocated services  pending"
+  }
+]

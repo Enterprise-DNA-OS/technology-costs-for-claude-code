@@ -30,7 +30,7 @@ try{
  equal((await run('showback',oct)).length,6);equal((await run('variance',oct)).find(x=>x.unit==='Advisory').variance,'800.0000000000000000');
  equal((await run('exceptions',oct)).length,1);equal((await run('attention')).find(x=>x.period==='October 2026').issue,'Unallocated services');
  assert((await run('compliance')).some(x=>x.rule==='DRIVER_AGE'));checks++;
- await fail(['review',first.id,'--actor=Alex','--decision=approved','--conclusion=ok','--evidence=review'],'different person');
+ await fail(['review',first.id,'--actor=Alex','--decision=approved','--conclusion=ok','--evidence=review'],/different person/);
  await fail(['review',first.id,'--actor=Riley','--decision=approved','--conclusion=ok','--evidence=review'],/unallocated/);
  await run('review',first.id,'--actor=Riley','--decision=rejected','--conclusion=Missing storage weights','--evidence=review/1');
  await run('set-driver',oct,'--service=Archive storage','--unit=Operations','--weight=1','--evidence=Storage meter','--measured-on=2026-10-31','--actor=Alex');
@@ -46,7 +46,7 @@ try{
  await run('add','period','--name=November 2026','--currency=NZD','--due=2026-12-07','--retain-until=2033-11-30');
  await run('add','unit','--name=Advisory West','--owner=Morgan');
  await run('add','service','--name=Test service','--owner=Sam','--basis=Usage');
- await fail(['set-budget',oct,'--unit=Advis','--amount=1'],/Ambiguous.*Advisory.*Advisory West/);
+ await fail(['set-budget',oct,'--unit=Advis','--amount=1'],/(?=.*Ambiguous)(?=.*Advisory West)(?=.*20000000-0000-4000-8000-000000000001)/);
  const file=path.join(REPO_ROOT,'examples/apptio-costs.csv');
  const imp=['import','apptio','--period=November 2026',`--file=${file}`,'--actor=Alex','--source-ref=Report export, unfiltered','--expected-count=2','--expected-total=80.01'];
  equal((await run(...imp,'--dry-run'))[0].status,'Validated only');equal((await run('costs','--period=November 2026')).length,0);
