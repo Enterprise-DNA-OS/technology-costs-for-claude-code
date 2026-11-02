@@ -23,3 +23,7 @@ npm run view and npm run docs render the weekly dashboard, departmental statemen
 Three real CLI captures from the fictional seeded database are preserved in docs/demo-captures.json and copied into the landing page. The Command Centre page gate passes with seven sourced money figures and no brand violations. README, operating instructions and prose documents pass brand lint. No TODO(author), em dash or banned phrase remains in authored files.
 
 GitHub visibility is PRIVATE. The page writer pushed the noindex, unlinked page. Publication belongs to the runner. Command Centre registry changes are left for its runner to commit.
+
+The final landing page was inspected at desktop width 1440 and mobile width 390 in a headless browser. It renders noindex,nofollow, contains six correctly tagged booking links and has no horizontal mobile overflow. Invalid icon names found during inspection were corrected and the page passed the gate again before its final push. The gate also passed against the rendered HTML. All preview servers and browsers were closed.
+
+The public URL returned HTTP 404 during the handoff checks. A successful source push and local rendering are verified; production deployment availability is not claimed.
