@@ -125,4 +125,4 @@ npm test creates a temporary database, migrates and seeds twice, exercises all 2
 
 One CLI in scripts/costs.mjs. Plain Postgres migrations in supabase/migrations. PGlite and Postgres share the adapter in scripts/lib/db.mjs. views.json and documents.json define read-only reports. brand.json supplies the business identity. Commands are shared across agent runtimes through AGENTS.md and CLAUDE.md.
 
-MIT. Built and optionally operated through [Omni by Enterprise DNA](https://enterprisedna.co/omni/instead-of/ibm-apptio-costing).
+MIT. Built and optionally operated through [Omni by Enterprise DNA](https://enterprisedna.co/omni/instead-of/ibm-apptio-costing?utm_source=github&utm_medium=readme&utm_campaign=ibm-apptio-costing).
